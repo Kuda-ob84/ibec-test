@@ -1,6 +1,7 @@
 import 'package:ibec_test/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ibec_test/screens/news_by_topics/ui/topics_news_screen.dart';
 import 'package:ibec_test/screens/top_headlines_screen/ui/top_headlines_screen.dart';
 import 'cubit/bottom_nav_bar_cubit.dart';
 import 'custom_animated_bottom_bar.dart';
@@ -50,7 +51,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                       Navigator(
                         key: navigatorKeys[1],
                         onGenerateRoute: (route) => MaterialPageRoute(
-                          builder: (context) => Container(),
+                          builder: (context) => TopicNewsScreen(),
                         ),
                       ),
                     ],

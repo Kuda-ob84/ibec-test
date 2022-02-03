@@ -13,4 +13,8 @@ class GlobalRepository {
   Future<TopHeadlinesResponse> getTopHeadlines(int page, {String category = ""}) async {
     return _networkService.getTopHeadlines(page, category);
   }
+
+  Future<TopHeadlinesResponse> searchNews(int page,String search) async {
+    return _networkService.searchNews(page, search);
+  }
 }

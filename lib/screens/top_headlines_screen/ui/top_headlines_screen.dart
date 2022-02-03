@@ -16,101 +16,105 @@ class TopHeadlinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      // backgroundColor: AppColors.backgroundShade,
-      // appBar: const CustomAppBar(
-      //   height: 100,
-      //   title: "Top headlines",
-      //   bottom: _BuildBottom(),
-      // ),
-      slivers: [
-        const SliverAppBar(
-          pinned: true,
-          forceElevated: true,
-          title: Text(
-            "Top headlines",
-            style: AppTextStyles.s20w600,
+    return Scaffold(
+      backgroundColor: AppColors.backgroundShade,
+      body: CustomScrollView(
+        // backgroundColor: AppColors.backgroundShade,
+        // appBar: const CustomAppBar(
+        //   height: 100,
+        //   title: "Top headlines",
+        //   bottom: _BuildBottom(),
+        // ),
+        slivers: [
+          const SliverAppBar(
+            pinned: true,
+            forceElevated: true,
+            elevation: 0,
+            title: Text(
+              "Top headlines",
+              style: AppTextStyles.s20w600,
+            ),
           ),
-        ),
-        SliverFillRemaining(
-          child: BlocConsumer<BlocTopHeadlinesScreen, StateBlocTopHeadlines>(
-              builder: (context, state) {
-                if (state is StateTopHeadlinesLoad) {
-                  isLoading = false;
-                  if (state.newsArticles.isEmpty) {
-                    return const Expanded(
-                      child: Center(
-                        child: Text("News are not exist"),
-                      ),
-                    );
-                  } else {
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        isLoading = false;
-                        context
-                            .read<BlocTopHeadlinesScreen>()
-                            .add(EventInitialTopHeadlines(isRefresh: true));
-                      },
-                      child: NotificationListener<ScrollNotification>(
-                        onNotification: (ScrollNotification notification) {
-                          if (!isLoading &&
-                              notification.metrics.pixels ==
-                                  notification.metrics.maxScrollExtent) {
-                            isLoading = true;
-                            context
-                                .read<BlocTopHeadlinesScreen>()
-                                .add(EventInitialTopHeadlines());
-                          }
-                          return false;
+          SliverFillRemaining(
+            child: BlocConsumer<BlocTopHeadlinesScreen, StateBlocTopHeadlines>(
+                builder: (context, state) {
+                  if (state is StateTopHeadlinesLoad) {
+                    isLoading = false;
+                    if (state.newsArticles.isEmpty) {
+                      return const Expanded(
+                        child: Center(
+                          child: Text("News are not exist"),
+                        ),
+                      );
+                    } else {
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          isLoading = false;
+                          context
+                              .read<BlocTopHeadlinesScreen>()
+                              .add(EventInitialTopHeadlines(isRefresh: true));
                         },
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                addAutomaticKeepAlives: true,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 18),
-                                itemCount: state.newsArticles.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () => AppRouter.push(
-                                      context,
-                                      DetailedNewsScreen(
-                                          newsDetails:
-                                              state.newsArticles[index]),
-                                      rootNavigator: true,
-                                    ),
-                                    child: _BuildNewsPreview(
-                                        article: state.newsArticles[index]),
-                                  );
-                                },
-                              ),
-                              if (state.isLoading)
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 85.0),
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
-                                )
-                              else
-                                const SizedBox(
-                                  height: 85,
-                                )
-                            ],
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification notification) {
+                            if (!isLoading &&
+                                notification.metrics.pixels ==
+                                    notification.metrics.maxScrollExtent) {
+                              isLoading = true;
+                              context
+                                  .read<BlocTopHeadlinesScreen>()
+                                  .add(EventInitialTopHeadlines());
+                            }
+                            return false;
+                          },
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  addAutomaticKeepAlives: true,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 18),
+                                  itemCount: state.newsArticles.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () => AppRouter.push(
+                                        context,
+                                        DetailedNewsScreen(
+                                            newsDetails:
+                                                state.newsArticles[index]),
+                                        rootNavigator: true,
+                                      ),
+                                      child: _BuildNewsPreview(
+                                          article: state.newsArticles[index]),
+                                    );
+                                  },
+                                ),
+                                if (state.isLoading)
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 85.0),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  )
+                                else
+                                  const SizedBox(
+                                    height: 85,
+                                  )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-              listener: (context, state) {}),
-        )
-      ],
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+                listener: (context, state) {}),
+          )
+        ],
+      ),
     );
   }
 }
@@ -190,6 +194,13 @@ class _BuildNewsPreview extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.background,
             borderRadius: BorderRadius.circular(20),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromRGBO(16, 51, 115, 0.2),
+                blurRadius: 10,
+                offset: Offset(0, 0),
+              )
+            ]
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

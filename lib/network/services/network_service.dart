@@ -33,4 +33,20 @@ class NetworkService {
     );
     return topHeadlinesResponseFromJson(json.encode(response.data));
   }
+
+  Future<TopHeadlinesResponse> searchNews(
+      int page, String search) async {
+    Map<String, dynamic> queryParameters = {
+      "apiKey": apiKey,
+      "page": page,
+      "pageSize": 10,
+      "q": search,
+    };
+    var response = await _dioWrapper.sendRequest(
+      path: "everything",
+      queryParameters: queryParameters,
+      method: NetworkMethod.get,
+    );
+    return topHeadlinesResponseFromJson(json.encode(response.data));
+  }
 }

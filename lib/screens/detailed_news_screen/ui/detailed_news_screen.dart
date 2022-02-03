@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ibec_test/constants/app_colors.dart';
 import 'package:ibec_test/constants/app_text_styles.dart';
 import 'package:ibec_test/network/models/dto_models/response/top_headlines_response.dart';
-import 'package:ibec_test/widgets/app_router.dart';
-import 'package:ibec_test/widgets/custom_app_bar.dart';
 import 'package:intl/intl.dart';
 
 class DetailedNewsScreen extends StatelessWidget {
@@ -26,14 +24,13 @@ class DetailedNewsScreen extends StatelessWidget {
             SliverAppBar(
               backgroundColor: Colors.transparent,
               expandedHeight: 280.0,
-              toolbarHeight: 190,
+              // toolbarHeight: 190,
               floating: true,
-              pinned: true,
-              leading: SizedBox(),
+              leading: const SizedBox(),
               snap: true,
-              actionsIconTheme: IconThemeData(opacity: 0.0),
+              actionsIconTheme: const IconThemeData(opacity: 0.0),
               flexibleSpace: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
@@ -112,34 +109,12 @@ class DetailedNewsScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(100),
                                 color: AppColors.backgroundShade,
                               ),
-                              child: Center(child: Icon(Icons.arrow_back)),
+                              child:
+                                  const Center(child: Icon(Icons.arrow_back)),
                             ),
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   bottom: 0,
-                      //   top: 360,
-                      //   right: 0,
-                      //   left: 0,
-                      //   child: BackdropFilter(
-                      //     filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                      //     child: Container(
-                      //       height: 30,
-                      //       decoration:
-                      //           BoxDecoration(color: Colors.white.withOpacity(0.0)),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Positioned(
-                      //   bottom: 0,
-                      //   child: Container(
-                      //       width: MediaQuery.of(context).size.width,
-                      //       height: 180,
-                      //       decoration: BoxDecoration(
-                      //         color: Colors.black.withOpacity(0.28),
-                      //       )),
-                      // ),
                     ],
                   ),
                 ),
@@ -147,58 +122,70 @@ class DetailedNewsScreen extends StatelessWidget {
             ),
           ];
         },
-        body: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: AppColors.backgroundGrey,
+        body: Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 35.0, 18.0, 18.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Visibility(
+                      visible: newsDetails.author != null &&
+                          newsDetails.author!.isNotEmpty,
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: AppColors.backgroundGrey,
+                            ),
+                            child: Text(
+                              newsDetails.author!,
+                              style: const TextStyle(color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Text(
-                      newsDetails.author ?? "No author",
-                      style: TextStyle(color: Colors.white),
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: AppColors.background,
+                      ),
+                      child: Text(
+                        DateFormat("MMM. dd. yyyy")
+                            .format(newsDetails.publishedAt ?? DateTime.now()),
+                        style: const TextStyle(color: Colors.black),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 18,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: AppColors.background,
-                    ),
-                    child: Text(
-                      DateFormat("MMM. dd. yyyy")
-                          .format(newsDetails.publishedAt ?? DateTime.now()),
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(0
-                height: 20,
-              ),
-              Text(
-                newsDetails.description ?? "No description",
-                style: AppTextStyles.pLarge
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                newsDetails.content ?? "No description",
-                style: AppTextStyles.pLarge
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  newsDetails.description ?? "No description",
+                  style: AppTextStyles.pLarge.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  newsDetails.content ?? "No description",
+                  style: AppTextStyles.pLarge.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
         ),
       ),

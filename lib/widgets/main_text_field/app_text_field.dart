@@ -15,6 +15,7 @@ class AppTextField extends StatefulWidget {
     bool enabled = true,
     this.style,
     this.hintStyle,
+    this.suffixIcon,
     TextEditingController? controller,
     FocusNode? focusNode,
   })  : contentPadding = contentPadding ?? const EdgeInsets.all(17.0),
@@ -33,6 +34,7 @@ class AppTextField extends StatefulWidget {
   final int? maxLines;
   final int? minLines;
   final TextStyle? style;
+  final Widget? suffixIcon;
 
   @override
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -66,6 +68,7 @@ class _AppTextFieldState extends State<AppTextField> {
                 AppTextStyles.s16w500.copyWith(
                   color: AppColors.grey,
                 ),
+            suffixIcon: widget.suffixIcon,
             hintText: widget.hintText,
             counterText: '',
             enabledBorder: OutlineInputBorder(
